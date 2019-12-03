@@ -1,8 +1,5 @@
 package com.company;
 
-import jdk.swing.interop.SwingInterOpUtils;
-
-import javax.swing.plaf.synth.SynthOptionPaneUI;
 import java.util.Scanner;
 
 public class Main {
@@ -197,16 +194,6 @@ public class Main {
         }
         sb.append(a.charAt(a.length() - 1));
         return sb.toString();
-
-//        StringBuilder sb = new StringBuilder();
-//        for (int i = 0; i < a.length(); i++) {
-//            if (a.charAt(i) == b) {
-//                sb.append(c); // sb = sb + c;
-//            } else {
-//                sb.append(a.charAt(i)); // sb = sb + a.charAt(i)
-//            }
-//        }
-//        return sb.toString();
     }
 
     public static String sustituyePalabra(String a, String b, String c) {
@@ -325,44 +312,8 @@ public class Main {
         return true;
     }
 
-    public static int cuentaPalabras(String a) {
-        // Palabra: ristra de carácteres separados por cualquier cosa que no sea una letra
-        int palabras = 0;
-
-        // Explicación:
-        // Recorremos la cadena en búsqueda de carácteres que no sean letras
-        // Cuando encontramos algunos, ponemos la variable proc a true para indicar que se está procesando
-        // Mientras proc sea true, no contamos más palabras aunque haya carácteres que no sean letras
-        // Cuando encontramos la siguiente letra, proc pasa a ser false, con lo que habilitamos el algoritmo para contar más palabras
-
-        boolean proc = true;
-
-        // Añadimos un punto al final ya que no detectamos el salto de línea
-        a = a + ".";
-
-        for (int i = 0; i < a.length(); i++) {
-            if (!Character.isLetter(a.charAt(i))) {
-                if (!proc) palabras++;
-                proc = true;
-            } else {
-                if (Character.isLetter(a.charAt(i))) proc = false;
-            }
-        }
-        return palabras;
-    }
-
     public static String sustituyeCaracter(String a, char b, char c) {
         String aux = "";
-
-//        for (int i = 0; i < a.length(); i++) {
-//            if (a.charAt(i) == b )
-//            {
-//                aux = a.substring(0, i);
-//                aux = aux + c + a.substring(i + 1);
-//                a = aux;
-//            }
-//        }
-
         for (int i = 0; i < a.length(); i++) {
             if (a.charAt(i) == b) {
                 aux = aux + c;
@@ -397,22 +348,6 @@ public class Main {
         return a;
     }
 
-    public static String padLeft(String a, int b) {
-        int c = a.length(); // longitud original
-        for (int i = 0; i < (b - c); i++) {
-            a = "." + a;
-        }
-        return a;
-    }
-
-    public static String padRight(String a, int b) {
-        int c = a.length(); // longitud original
-        for (int i = 0; i < (b - c); i++) {
-            a = a + ".";
-        }
-        return a;
-    }
-
     public static String repiteCaracter(char a, int b) {
         String c = "";
         for (int i = 0; i < b; i++) {
@@ -428,40 +363,5 @@ public class Main {
             a = sustituyeCaracter(a, acentos.charAt(i), normal.charAt(i));
         }
         return a;
-    }
-
-    public static String quitaEspacios(String a) {
-        String b = "";
-        for (int i = 0; i < a.length(); i++) {
-            if (a.charAt(i) != ' ') {
-                b = b + a.charAt(i);
-            }
-        }
-        a = b;
-        return a;
-    }
-
-    public static boolean contiene(String b, char a) {
-        for (int i = 0; i < b.length(); i++) {
-            if (b.charAt(i) == a) return true;
-        }
-        return false;
-    }
-
-    public static int numeroVocales(String a) {
-        int vc = 0;
-        String compara = "aáAÁeéEÉiíIÍoóOÓuúüUÚÜ";
-        for (int i = 0; i < a.length(); i++) {
-            if (contiene(compara, a.charAt(i))) vc++;
-        }
-        return vc;
-    }
-
-    public static int numeroEspacios(String a) {
-        int sp = 0;
-        for (int i = 0; i < a.length(); i++) {
-            if (a.charAt(i) == ' ') sp++;
-        }
-        return sp;
     }
 }
