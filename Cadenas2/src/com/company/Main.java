@@ -20,7 +20,7 @@ public class Main {
             System.out.print(ANSI_BLACK_BACKGROUND);
             System.out.print(ANSI_YELLOW);
             System.out.print(ANSI_BOLD);
-            System.out.print("  MENÚ EJERCICIOS CADENAS (I)");
+            System.out.print("  MENÚ EJERCICIOS CADENAS (II)");
             System.out.print(repiteCaracter(' ', 61));
             System.out.println(ANSI_RESET);
 
