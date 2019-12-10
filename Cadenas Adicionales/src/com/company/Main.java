@@ -59,7 +59,9 @@ public class Main {
             System.out.print(ANSI_YELLOW_BACKGROUND);
             System.out.print(ANSI_BLACK);
             System.out.print(" 9. numeroTexto99");
-            System.out.print(repiteCaracter(' ', 76));
+            System.out.print("\t\t10. limpiaCadena");
+            System.out.print("\t\t11. compruebaEmail");
+            System.out.print(repiteCaracter(' ', 28));
             System.out.print(ANSI_BLACK_BACKGROUND);
             System.out.print(" ");
             System.out.println(ANSI_RESET);
@@ -108,15 +110,8 @@ public class Main {
                 case 4: {
                     // Método de entrada por teclado que permite los saltos de líneas
                     String texto = null;
-                    BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-                    System.out.print("Introduzca un texto: ");
-                    try {
-                        texto = reader.readLine();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                    System.out.println();
-                    System.out.println("Texto introducido: " + texto);
+                    System.out.println("Introduzca un texto:");
+                    texto = leeTexto();
                     System.out.println();
                     //Submenu
                     System.out.println("1. Todas las letras en minúsculas");
@@ -165,11 +160,30 @@ public class Main {
                 }
                 break;
                 case 9: {
-                    for (int i = 0; i < 100; i++) {
-                        System.out.println(numeroTexto99(i));
+                    for (int i = 0; i < 1000; i++) {
+                        System.out.println(numeroTexto999(i));
                     }
                 }
                 break;
+                case 10: {
+                    System.out.print("Introduzca un texto: ");
+                    String a = sc.nextLine();   // limpiar buffer
+                    a = sc.nextLine();
+                    System.out.println(limpiaCadena(a));
+                }
+                break;
+                case 11: {
+                    System.out.print("Introduzca una dirección de email: ");
+                    String a = sc.nextLine();   // limpiar buffer
+                    a = sc.nextLine();
+                    if(compruebaEmail(a)) {
+                        System.out.println("La dirección es válida");
+                    }
+                    else
+                    {
+                        System.out.println("La dirección no es válida");
+                    }
+                }
                 default: {
                     // opcion no válida
                 }
@@ -177,8 +191,115 @@ public class Main {
         }
     }
 
+    public static boolean compruebaEmail(String a)
+    {
+        /*if(a.matches("^[^@]+@[^@]+\\.[a-zA-Z]{2,}$")){
+            return true;
+        } else return false;*/
+        // Manual
+        String permitidos = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-.";
+        boolean valido = false;
+        String[] parte = a.split("@");
+        if(parte.length==2) // Sólo hay una @
+        {
+            if(!parte[0].equals("")) // La @ no está al principio
+            {
+                // Cada parte (usuario/dominio) no podrá tener acentos ni ñ, ni empezar por punto
+                for (int i = 0; i < parte.length; i++)
+                {
+                    for (int j = 0; j < parte[i].length(); j++)
+                    {
+                        // Sólo caracteres permitidos
+                        if(permitidos.indexOf(parte[i].charAt(j))==-1){
+                            valido = false;
+                        }
+                        // No empezar o terminar con punto, con guión, o contener dos puntos seguidos
+                        if(parte[i].charAt(0)=='.' || parte[i].charAt(parte[i].length() - 1)=='.' ||
+                                parte[i].charAt(0)=='-' || parte[i].charAt(parte[i].length() - 1)=='-' ||
+                        parte[i].contains(".."))
+                        {
+                            valido = false;
+                        }
+                        else
+                        {
+                            valido = true;
+                        }
+                    }
+                }
+            }
+        }
+        return valido;
+    }
+
+    public static String limpiaCadena(String a)
+    {
+        String b = "";
+        for (int i = 0; i < a.length(); i++) {
+            if(Character.isLetter(a.charAt(i)))
+            {
+                b = b + a.charAt(i);
+            }
+            else
+            {
+                b = b + " ";
+            }
+        }
+        b = quitaEspaciosSobrante(b);
+        return b;
+    }
+
+    public static String leeTexto()
+    {
+        Scanner sc = new Scanner(System.in);
+        String cadena = sc.nextLine();
+        String a = "";
+        while (!cadena.equals(""))
+        {
+            a = a + cadena + "\n";
+            cadena = sc.nextLine();
+        }
+        return a;
+    }
+
+    public static String numeroTexto999(int n)
+    {
+        String texto;
+        int unidDec = n % 100;
+        int centenas = n / 100;
+        if(n < 100)
+        {
+            texto = numeroTexto99(n);
+        }
+        else
+        {
+            if(n == 100)
+            {
+                texto = "cien";
+            }
+            else
+            {
+                String[] textoCent = {"", "ciento", "doscientos", "trescientos", "cuatrocientos",
+                        "quinientos", "seiscientos", "setecientos", "ochocientos",
+                        "novecientos"};
+
+                if(unidDec == 0)
+                {
+                    texto = textoCent[centenas];
+                }
+                else
+                {
+                    texto = textoCent[centenas] + " " + numeroTexto99(unidDec);
+                }
+            }
+        }
+
+        return texto;
+    }
+
     public static String numeroTexto99(int a)
     {
+        String[] diez = {"diez", "once", "doce", "trece", "catorce", "quince"};
+        String[] siguientes = {"dieci", "veinti", "treinta", "cuarenta", "cincuenta", "sesenta", "setenta", "ochenta", "noventa"};
         if(a<0 || a>99)
         {
             return "";
@@ -186,67 +307,17 @@ public class Main {
         else
         {
             String b = "";
-            if(a<10){
+            if(a < 10){
               return numeroTexto9(a);
             }
             else if(a>=10 && a<=15)
             {
-                switch (a)
-                {
-                    case 10:
-                        b = "diez";
-                        break;
-                    case 11:
-                        b = "once";
-                        break;
-                    case 12:
-                        b = "doce";
-                        break;
-                    case 13:
-                        b = "trece";
-                        break;
-                    case 14:
-                        b = "catorce";
-                        break;
-                    case 15:
-                        b = "quince";
-                        break;
-                }
-                return b;
+                return diez[a - 10];
             }
             else if (a>15)
             {
                 int decena = a/10;
-                switch (decena)
-                {
-                    case 1:
-                        b = "dieci";
-                        break;
-                    case 2:
-                        b = "veinti";
-                        break;
-                    case 3:
-                        b = "treinta";
-                        break;
-                    case 4:
-                        b = "cuarenta";
-                        break;
-                    case 5:
-                        b = "cincuenta";
-                        break;
-                    case 6:
-                        b = "sesenta";
-                        break;
-                    case 7:
-                        b = "setenta";
-                        break;
-                    case 8:
-                        b = "ochenta";
-                        break;
-                    case 9:
-                        b = "noventa";
-                        break;
-                }
+                b = siguientes[decena - 1];
                 if (a - decena * 10 != 0)
                 {
                     if(decena==1 || decena==2)
@@ -276,46 +347,13 @@ public class Main {
 
     public static String numeroTexto9(int a)
     {
-        String b = "";
-        switch (a)
-        {
-            case 0:
-                b = "cero";
-                break;
-            case 1:
-                b = "uno";
-                break;
-            case 2:
-                b = "dos";
-                break;
-            case 3:
-                b = "tres";
-                break;
-            case 4:
-                b = "cuatro";
-                break;
-            case 5:
-                b = "cinco";
-                break;
-            case 6:
-                b = "seis";
-                break;
-            case 7:
-                b = "siete";
-                break;
-            case 8:
-                b = "ocho";
-                break;
-            case 9:
-                b = "nueve";
-                break;
-        }
-        return b;
+        String[] texto = {"cero", "uno", "dos", "tres", "cuatro", "cinco", "seis", "siete", "ocho", "nueve"};
+        return texto[a];
     }
 
     public static String[] palabrasMismaLetra(String a) {
         a = a.toLowerCase();
-        String[] palabras = a.split("[ .,-—]");
+        String[] palabras = a.split("[ ,.-]");
         String aux = "";
         for (int i = 0; i < palabras.length; i++) {
             if (palabras[i].length() > 0) {
@@ -385,6 +423,7 @@ public class Main {
 
     public static String mayusculasMinusculas(String a, int b) {
         String c = "";
+        boolean may = true;
         if (b < 1 || b > 4) {
             return "Opción incorrecta";
         } else {
@@ -395,13 +434,35 @@ public class Main {
                 case 2:
                     c = a.toUpperCase();
                     break;
-                case 3: {
-
-                }
+                case 3:
+                    for (int i = 0; i < a.length(); i++) {
+                        if(may)
+                        {
+                            c = c + Character.toUpperCase(a.charAt(i));
+                            may = false;
+                        }
+                        else
+                        {
+                            c = c + a.charAt(i);
+                        }
+                        if(a.charAt(i)==' ' || a.charAt(i)=='\n') may = true;
+                    }
                 break;
-                case 4: {
+                case 4:
 
-                }
+                    for (int i = 0; i < a.length(); i++) {
+                        if(may)
+                        {
+                            c = c + Character.toUpperCase(a.charAt(i));
+                            may = false;
+                        }
+                        else
+                        {
+                            c = c + a.charAt(i);
+                        }
+                        if(a.charAt(i)=='.' || a.charAt(i)=='\n') may = true;
+                    }
+                    break;
             }
             return c;
         }
@@ -523,6 +584,45 @@ public class Main {
             a = sustituyeCaracter(a, acentos.charAt(i), normal.charAt(i));
         }
         return a;
+    }
+
+    public static String quitaEspaciosTrim(String a) {
+        while (a.charAt(0) == ' ') {
+            a = a.substring(1);
+        }
+        while (a.charAt(a.length() - 1) == ' ') {
+            a = a.substring(0, a.length() - 1);
+        }
+        return a;
+    }
+
+    public static String quitaEspaciosSobrante(String a)
+    {
+        a = quitaEspaciosTrim(a);
+        String a1 = quitaDobleEspacio(a);
+        while(!a.equals(a1))
+        {
+            a = a1;
+            a1 = quitaDobleEspacio(a1);
+        }
+        return a;
+    }
+
+    public static String quitaDobleEspacio(String a)
+    {
+        StringBuilder sb = new StringBuilder();
+        boolean control = false;
+        for (int i = 0; i < a.length() - 1; i++) {
+            if (a.charAt(i) == ' ' && a.charAt(i + 1) == ' ')
+            {
+                sb.append(' ');
+                i++;
+            } else {
+                sb.append(a.charAt(i));
+            }
+        }
+        sb.append(a.charAt(a.length() - 1));
+        return sb.toString();
     }
 
 }
