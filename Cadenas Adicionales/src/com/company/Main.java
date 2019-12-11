@@ -573,7 +573,6 @@ public class Main {
                 aux = aux + a.charAt(i);
             }
         }
-
         return aux;
     }
 

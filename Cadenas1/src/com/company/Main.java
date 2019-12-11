@@ -78,14 +78,16 @@ public class Main {
                     continuar = false;
                     break;
                 case 1: {
-                    String a = "En un lugar de la Mancha";
-                    System.out.println(a);
+                    System.out.print("Introduzca una frase: ");
+                    String a = sc.nextLine();   // limpiar buffer
+                    a = sc.nextLine();
                     System.out.println(numeroEspacios(a));
                 }
                 break;
                 case 2: {
-                    String a = "La cigüeña vino de París, pero con el pico vacío";
-                    System.out.println(a);
+                    System.out.print("Introduzca una frase: ");
+                    String a = sc.nextLine();   // limpiar buffer
+                    a = sc.nextLine();
                     System.out.println(numeroVocales(a));
                 }
                 break;
@@ -183,18 +185,17 @@ public class Main {
     {
         // Palabra: ristra de carácteres separados por cualquier cosa que no sea una letra
         int palabras = 0;
-
         // Explicación:
         // Recorremos la cadena en búsqueda de carácteres que no sean letras
         // Cuando encontramos algunos, ponemos la variable proc a true para indicar que se está procesando
         // Mientras proc sea true, no contamos más palabras aunque haya carácteres que no sean letras
         // Cuando encontramos la siguiente letra, proc pasa a ser false, con lo que habilitamos el algoritmo para contar más palabras
-
+        // Ejemplos válidos:
+        // ¿Cuantas palabras hay aquí?
+        // ¿Cuantas,palabras,hay,aquí?
         boolean proc = true;
-
         // Añadimos un punto al final ya que no detectamos el salto de línea
         a = a + ".";
-
         for (int i = 0; i < a.length(); i++) {
             if(!Character.isLetter(a.charAt(i))){
                 if(!proc) palabras++;
@@ -237,7 +238,8 @@ public class Main {
 
     public static String padLeft(String a, int b)
     {
-        int c = a.length(); // longitud original
+        // Usamos '.' en vez de ' ' para mejorar la visualización de los resultados
+        int c = a.length();
         for (int i = 0; i < (b - c); i++) {
             a = "." + a;
         }
@@ -246,7 +248,8 @@ public class Main {
 
     public static String padRight(String a, int b)
     {
-        int c = a.length(); // longitud original
+        // Usamos '.' en vez de ' ' para mejorar la visualización de los resultados
+        int c = a.length();
         for (int i = 0; i < (b - c); i++) {
             a = a + ".";
         }
@@ -262,33 +265,13 @@ public class Main {
         return c;
     }
 
-    public static String quitaAcentos(String a)
-    {
-        String b = "";
-        String compara = "áéíóúü";
-        for (int i = 0; i < a.length(); i++) {
-            switch (a.charAt(i))
-            {
-                case 'á':
-                    b = b + 'a';
-                    break;
-                case 'é':
-                    b = b + 'e';
-                    break;
-                case 'í':
-                    b = b + 'i';
-                    break;
-                case 'ó':
-                    b = b + 'o';
-                    break;
-                case 'ú': case 'ü':
-                    b = b + 'u';
-                    break;
-                default:
-                    b = b + a.charAt(i);
-            }
+    public static String quitaAcentos(String a) {
+        String acentos = "áÁéÉíÍóÓúÚüÜ";
+        String normal = "aAeEiIoOuUuU";
+        for (int i = 0; i < acentos.length(); i++) {
+            a = sustituyeCaracter(a, acentos.charAt(i), normal.charAt(i));
         }
-        return b;
+        return a;
     }
 
     public static String quitaEspacios(String a)
@@ -306,16 +289,17 @@ public class Main {
 
     public static boolean esPalindromo(String a)
     {
-        //dabale arroz a la zorra el abad
+        //dábale arroz a la zorra el abad
+
+        // Preprocesado para facilitar cálculos
         // Eliminamos espacios
         a = quitaEspacios(a);
         // Transformamos a minúsculas
         a = a.toLowerCase();
         // Eliminamos acentos
         a = quitaAcentos(a);
+
         for (int i = 0; i < a.length()/2; i++) {
-            char b = a.charAt(i);
-            char c = a.charAt(a.length() - (i + 1));
             if(a.charAt(i)!=a.charAt(a.length() - (i + 1)))
             {
                 return false;
@@ -326,6 +310,7 @@ public class Main {
 
     public static boolean contiene(String b, char a)
     {
+        // esta función es 'case sensitive' y acentos
         for (int i = 0; i < b.length(); i++) {
             if (b.charAt(i) == a ) return true;
         }
